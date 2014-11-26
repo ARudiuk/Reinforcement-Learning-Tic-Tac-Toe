@@ -5,6 +5,7 @@ from os import path
 
 name = "test"
 bot = QBot.QBot(name)
+
 ttt = game.game()
 file_exists = path.isfile(name+'results'+'.npy')
 if file_exists:
@@ -18,8 +19,7 @@ for i in range(100000):
     results = np.append(results,r)
 bot.save_info()
 np.save(name+'results',results)
-np.savetxt(name+'results'+'.txt',results)
 
 
 # ttt = game.game()
-# ttt.play_with_human()
+# ttt.play_with_human(bot)

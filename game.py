@@ -6,7 +6,7 @@ class game:
         self.board = np.zeros((3,3),dtype=np.int)
         self.players = [0,'x','o']
 
-    def play_with_human(self):
+    def play_with_human(self,bot):
         move_count = 0
         player = np.random.randint(2)
         if player == 0:
@@ -24,13 +24,16 @@ class game:
                 if (result != -1):
                     break
             if((move_count+player)%2==1):
-                computer_move_x,computer_move_y = self.simple_ai_move()
-                move_error = self.make_move(computer_move_x,computer_move_y,2)
-                if(move_error is True):
+                # need to switch 1 and 2s so that learner looks at relevant states
+                learner_move = bot.train_move(np.reshape((self.board*2)%3,(9,)))
+                learner_move_x = learner_move/3
+                learner_move_y = learner_move%3
+                move_error = self.make_move(learner_move_x,learner_move_y, 2)
+                if(move_error is True):                    
                     continue
                 result = self.check_win()
-                if (result != -1):
-                    break
+                if (result != -1):                    
+                    break                
             move_count+=1
         self.print_board()
         if result == -1:
@@ -45,8 +48,8 @@ class game:
         learner_player = np.random.randint(2)
         #go until 9 moves
         while(move_count<9):  
-            self.print_board()
-            time.sleep(2)
+            # self.print_board()
+            # time.sleep(2)
             if((move_count+learner_player)%2==0):
                 #reshape for now, move to one dimension later
                 learner_move = bot.train_move(np.reshape(self.board,(9,)))
