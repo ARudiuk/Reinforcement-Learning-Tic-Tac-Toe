@@ -1,10 +1,20 @@
 import numpy as np
 import pylab as pl
-name = "test"
-results = np.load(name+'results'+'.npy')
+name = "0.1epsilon"
+results = np.loadtxt(name+'results.gz')
+indices = np.where(results==2)
+results[indices]=1
 length = np.shape(results)[0]
-ticks = length/100
-results = np.reshape(results,(ticks,100))
+temp =  results[length-10000:length]
+print np.shape(np.where(temp==0))
+print np.shape(np.where(temp==1))
+print np.shape(np.where(temp==2))
+print np.average(temp,axis=0)
+print length
+bin_size = 1000
+ticks = length/bin_size
+results = np.reshape(results,(ticks,bin_size))
+print np.shape(results)
 results = np.average(results,axis=1)
 pl.plot(results)
 pl.show()

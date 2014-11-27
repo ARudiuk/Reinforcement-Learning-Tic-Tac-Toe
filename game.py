@@ -25,7 +25,7 @@ class game:
                     break
             if((move_count+player)%2==1):
                 # need to switch 1 and 2s so that learner looks at relevant states
-                learner_move = bot.train_move(np.reshape((self.board*2)%3,(9,)))
+                learner_move = bot.greedy(np.reshape((self.board*2)%3,(9,)))
                 learner_move_x = learner_move/3
                 learner_move_y = learner_move%3
                 move_error = self.make_move(learner_move_x,learner_move_y, 2)
