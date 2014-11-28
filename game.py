@@ -1,5 +1,6 @@
 import numpy as np
 import sys
+import TicTacToeMLP
 import time
 class game:
     def __init__(self):
@@ -52,23 +53,23 @@ class game:
             # time.sleep(2)
             if((move_count+learner_player)%2==0):
                 #reshape for now, move to one dimension later
-                learner_move = bot.train_move(np.reshape(self.board,(9,)))
+                learner_move = bot.train_move(np.reshape(self.board,(9,)),format='TD')
                 learner_move_x = learner_move/3
                 learner_move_y = learner_move%3
                 self.last_board = np.copy(self.board)
                 self.last_move = learner_move            
-                move_error = self.make_move(learner_move_x,learner_move_y, 1)                
+                move_error = self.make_move(learner_move_x,learner_move_y, 1)
                 if(move_error is True):
                     continue
                 result = self.check_win()                
                 if (result != -1):
-                    bot.train_update(100,np.reshape(self.last_board,(9,)),self.last_move)
+                    bot.train_update(100,np.reshape(self.last_board,(9,)),self.last_move,format='TD')
                     break
                 if (result == -1):
-                    bot.train_update(0,np.reshape(self.last_board,(9,)),self.last_move)
+                    bot.train_update(0,np.reshape(self.last_board,(9,)),self.last_move,format='TD')
             if((move_count+learner_player)%2==1):
                 # need to switch 1 and 2s so that learner looks at relevant states
-                learner_move = bot.train_move(np.reshape((self.board*2)%3,(9,)))
+                learner_move = bot.train_move(np.reshape((self.board*2)%3,(9,)),format='TD')
                 learner_move_x = learner_move/3
                 learner_move_y = learner_move%3
                 move_error = self.make_move(learner_move_x,learner_move_y, 2)
@@ -76,12 +77,55 @@ class game:
                     continue
                 result = self.check_win()
                 if (result != -1):
-                    bot.train_update(-100,np.reshape(self.last_board,(9,)),self.last_move)
+                    bot.train_update(-100,np.reshape(self.last_board,(9,)),self.last_move,format='TD')
                     break                
             move_count+=1
         if result == -1:
             return 0
         else:            
+            return int(result)
+
+    def play_with_self_mlp(self, bot):
+        self.board = np.zeros((3,3),dtype=np.int)
+        move_count = 0
+        #which player number is the learning bot? 1 or 2
+        learner_player = np.random.randint(2)
+        #go until 9 moves
+        while(move_count<9):
+            # self.print_board()
+            # time.sleep(2)
+            if((move_count+learner_player)%2==0):
+                #reshape for now, move to one dimension later
+                learner_move = bot.train_move(np.reshape(self.board,(9,)),format='mlp')
+                learner_move_x = learner_move/3
+                learner_move_y = learner_move%3
+                self.last_board = np.copy(self.board)
+                self.last_move = learner_move
+                move_error = self.make_move(learner_move_x,learner_move_y, 1)
+                if(move_error is True):
+                    continue
+                result = self.check_win()
+                if (result != -1):
+                    bot.train_update(100,np.reshape(self.last_board,(9,)),self.last_move,format='mlp')
+                    break
+                if (result == -1):
+                    bot.train_update(0,np.reshape(self.last_board,(9,)),self.last_move,'format='mlp'')
+            if((move_count+learner_player)%2==1):
+                # need to switch 1 and 2s so that learner looks at relevant states
+                learner_move = bot.train_move(np.reshape((self.board*2)%3,(9,)),format='mlp')
+                learner_move_x = learner_move/3
+                learner_move_y = learner_move%3
+                move_error = self.make_move(learner_move_x,learner_move_y, 2)
+                if(move_error is True):
+                    continue
+                result = self.check_win()
+                if (result != -1):
+                    bot.train_update(-100,np.reshape(self.last_board,(9,)),self.last_move,format='mlp')
+                    break
+            move_count+=1
+        if result == -1:
+            return 0
+        else:
             return int(result)
     def make_move(self,x,y,player):
         if(self.board[x,y]==0):

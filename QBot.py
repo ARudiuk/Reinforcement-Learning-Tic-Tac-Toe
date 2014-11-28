@@ -37,39 +37,55 @@ class QBot:
         self.Q = np.load(self.name+'.npy')
     def save_info(self):
         np.save(self.name,self.Q)
-    def train_move(self,state):
+    def train_move(self,state,format):
         #Tied to Tic-Tac-Toe currently
         #use epsilon-greedy for now
-        action = self.epsilon_greedy(state)
+        action = self.epsilon_greedy(state,format)
         return action    
-    def train_update(self,reward,state,action):
+    def train_update(self,reward,state,action,format):
         #shorten name of state
         s = state
-        if reward == 100 or reward == -100:
-            next_Q = 0
-        if reward == 0:
-            #calculate possible future state based on opponent making optimal move, follow by you            
-            newstate = np.copy(state)            
-            newstate[action] = 1            
-            opponent_move = self.greedy((newstate*2)%3)            
-            newstate[opponent_move]=2
-           
-            s2 = newstate
-            next_Q = np.max(self.Q[s2[0]][s2[1]][s2[2]][s2[3]][s2[4]][s2[5]][s2[6]][s2[7]][s2[8]])
-        if next_Q == -np.inf:
-            next_Q = 0        
-        self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]][action] += self.mu * (reward + self.gamma*next_Q - self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]][action])      
-    #pass in relevant row
-    def epsilon_greedy(self,state):        
-        if (np.random.rand()<self.epsilon):
-            #specific to tic-tac-toe 
-            indices = np.where(state==0)
-            pick = np.random.randint(np.shape(indices)[1])   
-            return indices[0][pick]            
-        else:            
-            # print self.Q[self.index]
-            s = state    
-            return np.argmax(self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]])
+        if format == 'TD':
+            if reward == 100 or reward == -100:
+                next_Q = 0
+            if reward == 0:
+                #calculate possible future state based on opponent making optimal move, follow by you
+                newstate = np.copy(state)
+                newstate[action] = 1
+                opponent_move = self.greedy((newstate*2)%3)
+                newstate[opponent_move]=2
+
+                s2 = newstate
+                next_Q = np.max(self.Q[s2[0]][s2[1]][s2[2]][s2[3]][s2[4]][s2[5]][s2[6]][s2[7]][s2[8]])
+            if next_Q == -np.inf:
+                next_Q = 0
+            self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]][action] += self.mu * (reward + self.gamma*next_Q - self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]][action])
+        elif format == 'mlp':
+
+        else:
+            print "format error! exiting!"
+            exit(1)
+        #pass in relevant row
+    def epsilon_greedy(self,state,format):
+        if format == 'TD':
+            if (np.random.rand()<self.epsilon):
+                #specific to tic-tac-toe
+                indices = np.where(state==0)
+                pick = np.random.randint(np.shape(indices)[1])
+                return indices[0][pick]
+            else:
+                # print self.Q[self.index]
+                s = state
+                return np.argmax(self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]])
+        elif format == 'mlp':
+            if (np.random.rand()<self.epsilon):
+                indices = np.where(state==0)
+                pick = np.random.randint(np.shape(indices)[1])
+                return indices[0][pick]
+        else:
+            print "format error!, exiting!"
+            exit(1)
+
     def greedy(self,state):
         s = state    
         return np.argmax(self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]])
