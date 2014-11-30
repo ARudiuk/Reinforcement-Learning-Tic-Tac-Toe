@@ -1,10 +1,11 @@
 import game
-import QBot
+import QBot_Three
+import QBot_Four
 import numpy as np
 from os import path
 
-name = "random"
-bot = QBot.QBot(name,epsilon=0.1)
+name = "test"
+bot = QBot_Four.QBot_Four(name,epsilon=0.1)
 
 # ttt = game.game()
 # file_exists = path.isfile(name+'results.gz')
