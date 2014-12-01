@@ -115,6 +115,8 @@ class mlp:
         return np.trace(cm)/np.sum(cm)*100
 
     def tictactoe(self,inputs):
+        inputs = np.reshape(inputs,(np.shape(inputs)[0],1))
+        inputs = np.transpose(inputs)
         inputs = np.concatenate((inputs,-np.ones((np.shape(inputs)[0],1))),axis=1)
         outputs = self.mlpfwd(inputs)
         return outputs

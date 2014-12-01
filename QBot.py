@@ -1,7 +1,6 @@
 from os import path
 import numpy as np
 import itertools as iterT
-import TicTacToeMLP as mlp
 
 class QBot:
     def __init__(self,name,mu = 0.7, gamma = 0.4, epsilon = 0.1):
@@ -43,10 +42,12 @@ class QBot:
         #use epsilon-greedy for now
         action, value = self.epsilon_greedy(state,format,player)
         return action
-    def train_move_mlp(self,state,player,format):
+    def train_move_mlp(self,state,player,mlp,format):
+        self.mlp = mlp
         action, value = self.epsilon_greedy(state,player,format)
         return action, value
-    def train_update(self,reward,state,action,format):
+    def train_update(self,reward,state,action,mlp,format):
+        self.mlp = mlp
         #shorten name of state
         rewards = np.zeros((np.shape(state)[0],))
         rewards[np.shape(state)[0]] = reward
@@ -67,7 +68,7 @@ class QBot:
                 next_Q = 0
             self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]][action] += self.mu * (reward + self.gamma*next_Q - self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]][action])
         elif format == 'mlp':
-            mlp.mlptrain(state,action,rewards,0.1,0.7)
+            self.mlp.mlptrain(state,action,rewards,0.1,0.7)
         else:
             print "format error! exiting!"
             exit(1)
@@ -89,7 +90,7 @@ class QBot:
                 pick = np.random.randint(np.shape(indices)[1])
                 s = state
                 s[pick] = player
-                epsi_results = mlp.mlp.tictactoe(s)
+                epsi_results = self.mlp.tictactoe(s)
                 return indices[0][pick], epsi_results
             else:
                 s = state
@@ -100,7 +101,7 @@ class QBot:
                 for j in range(np.shape(indices)[0]):
                     options[j][indices[j]] = player
                 for i in range(np.shape(indices)[0]):
-                    results[i] = mlp.mlp.tictactoe(options[i])
+                    results[i] = self.mlp.tictactoe(options[i])
                 return np.argmax(results), np.max(results)
         else:
             print "format error!, exiting!"
@@ -111,4 +112,4 @@ class QBot:
         if format == 'TD':
             return np.argmax(self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]])
         if format == 'mlp':
-            return np.argmax(mlp.tictactoe(s))
+            return np.argmax(self.mlp.tictactoe(s))

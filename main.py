@@ -6,6 +6,7 @@ from os import path
 
 name = "testfile"
 bot = QBot.QBot(name,epsilon=0.1)
+multi_layer = mlp.mlp(80,1)
 
 # ttt = game.game()
 # file_exists = path.isfile(name+'results.gz')
@@ -47,7 +48,7 @@ results = np.append(results,temp)
 for i in range(iterations):
     if(i%100==0):
         print i
-    r = ttt.play_with_self_mlp(bot)
+    r = ttt.play_with_self_mlp(bot,multi_layer)
     results[train_start+i] = r
 bot.save_info()
 np.savetxt(name+'results.gz', results)
