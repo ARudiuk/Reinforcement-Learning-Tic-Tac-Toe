@@ -38,10 +38,10 @@ class QBot:
         self.Q = np.load(self.name+'.npy')
     def save_info(self):
         np.save(self.name,self.Q)
-    def train_move(self,state,format):
+    def train_move(self,state,format,player):
         #Tied to Tic-Tac-Toe currently
         #use epsilon-greedy for now
-        action = self.epsilon_greedy(state,format)
+        action = self.epsilon_greedy(state,format,player)
         return action    
     def train_update(self,reward,state,action,format):
         #shorten name of state
@@ -53,7 +53,7 @@ class QBot:
                 #calculate possible future state based on opponent making optimal move, follow by you
                 newstate = np.copy(state)
                 newstate[action] = 1
-                opponent_move = self.greedy((newstate*2)%3)
+                opponent_move = self.greedy((newstate*2)%3, format)
                 newstate[opponent_move]=2
 
                 s2 = newstate
@@ -67,7 +67,7 @@ class QBot:
             if reward == 0:
                 newstate = np.copy(state)
                 newstate[action] = 1
-                opponent_move = self.greedy((newstate*2)%3)
+                opponent_move = self.greedy((newstate*2)%3, format)
                 newstate[opponent_move] = 2
 
                 s2 = newstate
@@ -76,7 +76,7 @@ class QBot:
             print "format error! exiting!"
             exit(1)
         #pass in relevant row
-    def epsilon_greedy(self,state,format):
+    def epsilon_greedy(self,state,format,player):
         if format == 'TD':
             if (np.random.rand()<self.epsilon):
                 #specific to tic-tac-toe
@@ -92,10 +92,24 @@ class QBot:
                 indices = np.where(state==0)
                 pick = np.random.randint(np.shape(indices)[1])
                 return indices[0][pick]
+            else:
+                s = state
+                indices = np.where(state==0)
+                options = np.ones((np.shape(indices)[0],))
+                options = options*s
+                results = np.zeros((np.shaoe(indices)[0],))
+                for j in range(np.shape(indices[0])):
+                    options[j][indices[j]] = player
+                for i in range(np.shape(indices)[0]):
+                    results[i] = mlp.tictactoe(options[i])
+                return np.argmax(results)
         else:
             print "format error!, exiting!"
             exit(1)
 
-    def greedy(self,state):
-        s = state    
-        return np.argmax(self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]])
+    def greedy(self,state,format):
+        s = state
+        if format == 'TD':
+            return np.argmax(self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]])
+        if format == 'mlp':
+            return np.argmax(mlp.tictactoe(s))

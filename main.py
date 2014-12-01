@@ -1,6 +1,7 @@
 import game
 import QBot
 import numpy as np
+import TicTacToeMLP as mlp
 from os import path
 
 name = "testfile"
