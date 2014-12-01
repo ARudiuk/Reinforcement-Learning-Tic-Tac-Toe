@@ -90,13 +90,14 @@ class game:
         move_count = 0
         #which player number is the learning bot? 1 or 2
         learner_player = np.random.randint(2)
+        values = np.zeros((9,))
         #go until 9 moves
         while(move_count<9):
             # self.print_board()
             # time.sleep(2)
             if((move_count+learner_player)%2==0):
                 #reshape for now, move to one dimension later
-                learner_move = bot.train_move(np.reshape(self.board,(9,)),format='mlp',1)
+                learner_move, values[move_count] = bot.train_move_mlp(np.reshape(self.board,(9,)),format='mlp',1)
                 learner_move_x = learner_move/3
                 learner_move_y = learner_move%3
                 self.last_board[move_count] = np.copy(self.board)
@@ -106,14 +107,14 @@ class game:
                     continue
                 result = self.check_win()
                 if (result != -1):
-                    bot.train_update(100,np.reshape(self.last_board,(9,move_count)),self.last_move[move_count],format='mlp')
+                    bot.train_update(100,np.reshape(self.last_board,(9,move_count)),values,format='mlp')
                     break
                 if (result == -1 and move_count == 9):
-                    bot.train_update(0,np.reshape(self.last_board,(9,move_count)),self.last_move[move_count],format='mlp')
+                    bot.train_update(0,np.reshape(self.last_board,(9,move_count)),values,format='mlp')
                     break
             if((move_count+learner_player)%2==1):
                 # need to switch 1 and 2s so that learner looks at relevant states
-                learner_move = bot.train_move(np.reshape((self.board*2)%3,(9,)),format='mlp',2)
+                learner_move, values[move_count] = bot.train_move_mlp(np.reshape((self.board*2)%3,(9,)),format='mlp',2)
                 learner_move_x = learner_move/3
                 learner_move_y = learner_move%3
                 move_error = self.make_move(learner_move_x,learner_move_y, 2)
@@ -121,10 +122,10 @@ class game:
                     continue
                 result = self.check_win()
                 if (result != -1):
-                    bot.train_update(-100,np.reshape(self.last_board,(9,move_count)),self.last_move[move_count],format='mlp')
+                    bot.train_update(-100,np.reshape(self.last_board,(9,move_count)),values,format='mlp')
                     break
-                if (result == -1 and move_count == 0):
-                    bot.train_update(0,np.reshape(self.last_board,(9,move_count)),self.last_move[move_count],format='mlp')
+                if (result == -1 and move_count == 9):
+                    bot.train_update(0,np.reshape(self.last_board,(9,move_count)),values,format='mlp')
                     break
             move_count+=1
         if result == -1:
