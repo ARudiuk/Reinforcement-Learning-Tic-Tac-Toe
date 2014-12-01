@@ -6,6 +6,7 @@ class game:
     def __init__(self):
         self.board = np.zeros((3,3),dtype=np.int)
         self.players = [0,'x','o']
+        TicTacToeMLP.mlp(80,1)
 
     def play_with_human(self,bot):
         move_count = 0
@@ -97,7 +98,7 @@ class game:
             # time.sleep(2)
             if((move_count+learner_player)%2==0):
                 #reshape for now, move to one dimension later
-                learner_move, values[move_count] = bot.train_move_mlp(np.reshape(self.board,(9,)),format='mlp',1)
+                learner_move, values[move_count] = bot.train_move_mlp(np.reshape(self.board,(9,)),1,format='mlp')
                 learner_move_x = learner_move/3
                 learner_move_y = learner_move%3
                 self.last_board[move_count] = np.copy(self.board)
@@ -114,7 +115,7 @@ class game:
                     break
             if((move_count+learner_player)%2==1):
                 # need to switch 1 and 2s so that learner looks at relevant states
-                learner_move, values[move_count] = bot.train_move_mlp(np.reshape((self.board*2)%3,(9,)),format='mlp',2)
+                learner_move, values[move_count] = bot.train_move_mlp(np.reshape((self.board*2)%3,(9,)),2,format='mlp')
                 learner_move_x = learner_move/3
                 learner_move_y = learner_move%3
                 move_error = self.make_move(learner_move_x,learner_move_y, 2)

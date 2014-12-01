@@ -4,7 +4,7 @@ import pylab as pl
 import game
 
 class mlp:
-     def __init__(self,nhidden,beta=1,momentum=0.9,outtype='logistic'):
+    def __init__(self,nhidden,beta=1,momentum=0.9,outtype='logistic'):
         """ Constructor """
         # Set up network size
         self.nin = 9
@@ -19,6 +19,7 @@ class mlp:
         # Initialise network
         self.weights1 = (np.random.rand(self.nin+1,self.nhidden)-0.5)*2/np.sqrt(self.nin)
         self.weights2 = (np.random.rand(self.nhidden+1,self.nout)-0.5)*2/np.sqrt(self.nhidden)
+
     def mlptrain(self,inputs,selected_outputs,rewards,eta,lambd):
         move_count = np.shape(inputs)[1]
         """ Train the thing """

@@ -43,11 +43,13 @@ class QBot:
         #use epsilon-greedy for now
         action, value = self.epsilon_greedy(state,format,player)
         return action
-    def train_move_mlp(self,state,format,player):
-        action, value = self.epsilon_greedy(state,format,player)
+    def train_move_mlp(self,state,player,format):
+        action, value = self.epsilon_greedy(state,player,format)
         return action, value
     def train_update(self,reward,state,action,format):
         #shorten name of state
+        rewards = np.zeros((np.shape(state)[0],))
+        rewards[np.shape(state)[0]] = reward
         s = state
         if format == 'TD':
             if reward == 100 or reward == -100:
@@ -65,12 +67,12 @@ class QBot:
                 next_Q = 0
             self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]][action] += self.mu * (reward + self.gamma*next_Q - self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]][action])
         elif format == 'mlp':
-            mlp.mlptrain(inputs,selected_outputs,rewards,eta,lambd)
+            mlp.mlptrain(state,action,rewards,0.1,0.7)
         else:
             print "format error! exiting!"
             exit(1)
         #pass in relevant row
-    def epsilon_greedy(self,state,format,player):
+    def epsilon_greedy(self,state,player,format):
         if format == 'TD':
             if (np.random.rand()<self.epsilon):
                 #specific to tic-tac-toe
@@ -87,18 +89,18 @@ class QBot:
                 pick = np.random.randint(np.shape(indices)[1])
                 s = state
                 s[pick] = player
-                epsi_results = mlp.tictactoe(s)
+                epsi_results = mlp.mlp.tictactoe(s)
                 return indices[0][pick], epsi_results
             else:
                 s = state
                 indices = np.where(state==0)
-                options = np.ones((np.shape(indices)[0],))
+                options = np.ones((np.shape(indices)[0],9))
                 options = options*s
-                results = np.zeros((np.shaoe(indices)[0],))
-                for j in range(np.shape(indices[0])):
+                results = np.zeros((np.shape(indices)[0],))
+                for j in range(np.shape(indices)[0]):
                     options[j][indices[j]] = player
                 for i in range(np.shape(indices)[0]):
-                    results[i] = mlp.tictactoe(options[i])
+                    results[i] = mlp.mlp.tictactoe(options[i])
                 return np.argmax(results), np.max(results)
         else:
             print "format error!, exiting!"
