@@ -5,7 +5,7 @@ import tdann
 import time
 
 class QBot_Threefxn:
-    def __init__(self,name,nhidden,board_size,mu = 0.7, gamma = 0.4, epsilon = 0.2,learning_rate=0.4):
+    def __init__(self,name,nhidden,board_size,mu = 0.2, gamma = 0.7, epsilon = 0.2,learning_rate=0.4):
         self.name = name
         self.board_size = board_size
         self.nhidden = nhidden
