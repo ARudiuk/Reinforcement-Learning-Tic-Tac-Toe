@@ -27,7 +27,7 @@ class game:
                     break
             if((move_count+player)%2==1):
                 # need to switch 1 and 2s so that learner looks at relevant states
-                learner_move = bot.greedy(np.reshape((self.board*2)%3,(self.board_tile_count,)))
+                learner_move = bot.greedy((self.board*2)%3)
                 learner_move_x = learner_move/self.board_size
                 learner_move_y = learner_move%self.board_size
                 move_error = self.make_move(learner_move_x,learner_move_y, 2)
@@ -45,7 +45,9 @@ class game:
 
     def play_with_self(self,bot):
         self.board = np.zeros((self.board_size,self.board_size),dtype=np.int)
-        move_count = 0
+        move_count = 0        
+        move_list = ()
+        state_list = ()
         #which player number is the learning bot? 1 or 2
         learner_player = np.random.randint(2)
         #go until board is filled
@@ -54,34 +56,35 @@ class game:
             # time.sleep(2)
             if((move_count+learner_player)%2==0):
                 #reshape for now, move to one dimension later
-                learner_move = bot.train_move(np.reshape(self.board,(self.board_tile_count,)))
+                learner_move = bot.train_move(self.board)
                 learner_move_x = learner_move/self.board_size
                 learner_move_y = learner_move%self.board_size
-                self.last_board = np.copy(self.board)
-                self.last_move = learner_move            
-                move_error = self.make_move(learner_move_x,learner_move_y, 1)                
+                move_list = move_list + (np.copy(learner_move),)
+                state_list = state_list+(np.copy(self.board),)
+                move_error = self.make_move(learner_move_x,learner_move_y, 1) 
+                if(move_error is True):
+                    move_list = np.delete(move_list,0)
+                    state_list = np.delete(state_list,0)
+                    continue
+                result = self.check_win()                
+                if (result != -1):
+                    bot.train_update(1,0,0,move_list,state_list)
+                    break
+            if((move_count+learner_player)%2==1):
+                # need to switch 1 and 2s so that learner looks at relevant states
+                learner_move = bot.train_move((self.board*2)%3)
+                learner_move_x = learner_move/self.board_size
+                learner_move_y = learner_move%self.board_size
+                move_error = self.make_move(learner_move_x,learner_move_y, 2)
                 if(move_error is True):
                     continue
                 result = self.check_win()                
                 if (result != -1):
-                    bot.train_update(100,np.reshape(self.last_board,(self.board_tile_count,)),self.last_move)
-                    break
-                if (result == -1):
-                    bot.train_update(0,np.reshape(self.last_board,(self.board_tile_count,)),self.last_move)
-            if((move_count+learner_player)%2==1):
-                # need to switch 1 and 2s so that learner looks at relevant states
-                learner_move = bot.train_move(np.reshape((self.board*2)%3,(self.board_tile_count,)))
-                learner_move_x = learner_move/self.board_size
-                learner_move_y = learner_move%self.board_size
-                move_error = self.make_move(learner_move_x,learner_move_y, 2)
-                if(move_error is True):                    
-                    continue
-                result = self.check_win()
-                if (result != -1):
-                    bot.train_update(-100,np.reshape(self.last_board,(self.board_tile_count,)),self.last_move)
+                    bot.train_update(0,1,0,move_list,state_list)
                     break                
             move_count+=1
         if result == -1:
+            bot.train_update(0,0,1,move_list,state_list)
             return 0
         else:            
             return int(result)
@@ -122,16 +125,25 @@ class game:
     def check_win(self):
         for i in range(self.board_size):
             if self.board[i,0]!=0:
-                if self.board[i,0]==self.board[i,1] and self.board[i,1] == self.board[i,2]:
+                if self.board_size == 3 and self.board[i,0]==self.board[i,1] and self.board[i,1] == self.board[i,2]:
+                    return self.board[i,0]
+                if self.board_size == 4 and self.board[i,0]==self.board[i,1] and self.board[i,1] == self.board[i,2] and self.board[i,2] == self.board[i,3]:
                     return self.board[i,0]
         for i in range(self.board_size):
             if self.board[0,i]!=0:
-                if self.board[0,i]==self.board[1,i] and self.board[1,i] == self.board[2,i]:
+                if self.board_size == 3 and self.board[0,i]==self.board[1,i] and self.board[1,i] == self.board[2,i]:
                     return self.board[0,i]
-        if self.board[1,1]!=0:
+                if self.board_size == 4 and self.board[0,i]==self.board[1,i] and self.board[1,i] == self.board[2,i] and self.board[2,i] == self.board[3,i]:
+                    return self.board[0,i]        
+        if self.board[1,1]!=0 and self.board_size == 3:
             if self.board[0,0]==self.board[1,1] and self.board[1,1] == self.board[2,2]:
                 return self.board[1,1]
             if self.board[0,2]==self.board[1,1] and self.board[1,1] == self.board[2,0]:
                 return self.board[1,1]
+        if self.board_size == 4:
+            if self.board[1,1]!=0 and self.board[0,0]==self.board[1,1] and self.board[1,1] == self.board[2,2] and self.board[2,2] == self.board[3,3]:
+                return self.board[1,1]
+            if self.board[1,2]!=0 and self.board[0,3]==self.board[1,2] and self.board[1,2] == self.board[2,1] and self.board[2,1] == self.board[3,0]:
+                return self.board[0,3]
         return -1
 

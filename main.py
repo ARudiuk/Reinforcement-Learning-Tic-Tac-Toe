@@ -1,16 +1,17 @@
 import game
 import QBot_Three
 import QBot_Four
+import QBot_Threefxn
 import numpy as np
 from os import path
 
 name = "test"
-bot = QBot_Four.QBot_Four(name,epsilon=0.1)
+bot = QBot_Threefxn.QBot_Threefxn(name,50,9,mu=0.7,learning_rate=0.4,epsilon=0.1)
 
-# ttt = game.game()
+# ttt = game.game(board_size = 3)
 # file_exists = path.isfile(name+'results.gz')
 # train_start= 0
-# iterations = 3000000
+# iterations = 2000000
 # if file_exists:
 #     results = np.loadtxt(name+'results.gz')
 #     iteration_size = np.shape(results)[0]
@@ -19,7 +20,7 @@ bot = QBot_Four.QBot_Four(name,epsilon=0.1)
 # temp = np.zeros((iterations,))
 # results = np.append(results,temp)
 # for i in range(iterations):
-#     if(i%10000==0):
+#     if(i%1000==0):
 #         print i    
 #     r = ttt.play_with_self(bot)
 #     results[train_start+i] = r    
@@ -27,5 +28,5 @@ bot = QBot_Four.QBot_Four(name,epsilon=0.1)
 # np.savetxt(name+'results.gz',results)
 
 
-ttt = game.game()
+ttt = game.game(board_size = 3)
 ttt.play_with_human(bot)
