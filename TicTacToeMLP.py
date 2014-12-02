@@ -119,4 +119,5 @@ class mlp:
         inputs = np.transpose(inputs)
         inputs = np.concatenate((inputs,-np.ones((np.shape(inputs)[0],1))),axis=1)
         outputs = self.mlpfwd(inputs)
+        print "outputs", outputs
         return outputs

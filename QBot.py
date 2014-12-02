@@ -95,13 +95,16 @@ class QBot:
             else:
                 s = state
                 indices = np.where(state==0)
-                options = np.ones((np.shape(indices)[0],9))
+                options = np.ones((np.shape(indices)[1],9))
                 options = options*s
-                results = np.zeros((np.shape(indices)[0],))
-                for j in range(np.shape(indices)[0]):
+                results = np.zeros((np.shape(indices)[1],))
+                for j in range(np.shape(indices)[1]):
+                    print "shape of options:", np.shape(options)
                     options[j][indices[j]] = player
-                for i in range(np.shape(indices)[0]):
+                for i in range(np.shape(indices)[1]):
+                    print "shape of indices", np.shape(indices)
                     results[i] = self.mlp.tictactoe(options[i])
+                    print "i:\n", i, "results:\n", results[i]
                 return np.argmax(results), np.max(results)
         else:
             print "format error!, exiting!"
