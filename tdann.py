@@ -48,9 +48,11 @@ class ANN:
         state = np.concatenate((np.array([1]),state))
         state = np.reshape(state,(1,self.feature_size+1))       
         #calculate error based on logistic
+        # print "start"
         # print self.output
         # print target
         # print self.output-target
+        # print (self.output-target)**2
         # time.sleep(2)
         deltao = mu*self.beta*(self.output-target)*self.output*(1.0-self.output)
         #calculate errors depending on amount of hidden layers

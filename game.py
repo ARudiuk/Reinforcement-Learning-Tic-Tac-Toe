@@ -23,22 +23,23 @@ class game:
                 if(move_error is True):
                     continue
                 result = self.check_win()
-                if (result != -1):
+                if (result == 1):
                     break
             if((move_count+player)%2==1):
                 # need to switch 1 and 2s so that learner looks at relevant states
-                learner_move = bot.greedy((self.board*2)%3)
+                learner_move = bot.greedy(-1*self.board)
                 learner_move_x = learner_move/self.board_size
                 learner_move_y = learner_move%self.board_size
-                move_error = self.make_move(learner_move_x,learner_move_y, 2)
+                move_error = self.make_move(learner_move_x,learner_move_y, -1)
                 if(move_error is True):                    
                     continue
+                print self.board
                 result = self.check_win()
-                if (result != -1):                    
+                if (result == -1):                    
                     break                
             move_count+=1
         self.print_board()
-        if result == -1:
+        if result == 0:
             print "Draw, No Winner! Get Good Scrub"
         else:
             print self.players[int(result)], "Wins!"
@@ -67,23 +68,23 @@ class game:
                     state_list = np.delete(state_list,0)
                     continue
                 result = self.check_win()                
-                if (result != -1):
+                if (result == 1):
                     bot.train_update(1,0,0,move_list,state_list)
                     break
             if((move_count+learner_player)%2==1):
                 # need to switch 1 and 2s so that learner looks at relevant states
-                learner_move = bot.train_move((self.board*2)%3)
+                learner_move = bot.train_move(-1*self.board)
                 learner_move_x = learner_move/self.board_size
                 learner_move_y = learner_move%self.board_size
-                move_error = self.make_move(learner_move_x,learner_move_y, 2)
+                move_error = self.make_move(learner_move_x,learner_move_y, -1)
                 if(move_error is True):
                     continue
                 result = self.check_win()                
-                if (result != -1):
+                if (result == -1):
                     bot.train_update(0,1,0,move_list,state_list)
                     break                
             move_count+=1
-        if result == -1:
+        if result == 0:
             bot.train_update(0,0,1,move_list,state_list)
             return 0
         else:            
@@ -145,5 +146,5 @@ class game:
                 return self.board[1,1]
             if self.board[1,2]!=0 and self.board[0,3]==self.board[1,2] and self.board[1,2] == self.board[2,1] and self.board[2,1] == self.board[3,0]:
                 return self.board[0,3]
-        return -1
+        return 0
 
