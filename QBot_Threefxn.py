@@ -55,18 +55,21 @@ class QBot_Threefxn:
         state=self.convert_state(state)
         action = self.epsilon_greedy(state,old_state)
         return action    
-    def train_update(self,reward1,reward2,reward3,move_list,state_list):
-        local_mu = self.mu
-        move_size = len(move_list)        
-        state = self.convert_state(state_list[0])
+    def train_update(self,reward1,reward2,reward3,move,state):
+        old_state = np.reshape(np.copy(state),(1,self.board_size))  
+        state = self.convert_state(state)
+        future_reward = "error"
+        if reward1 == 0 and reward2 == 0 and reward3 == 0:
+            old_state[0][move]=1
+            opponent_action = self.greedy(old_state*-1)
+            old_state[0][opponent_action]=2
+            future_action = self.greedy(old_state)
+            old_state = self.convert_state(old_state)
+            future_reward = self.mu*self.ann.forward_pass(old_state,future_action)
+        else:
+            future_reward = np.array([reward1,reward2,reward3])
         # error = self.mu * (reward + self.gamma*next_Q - self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]][action])      
-        self.ann.update_weights(state,move_list[0],np.array([reward1,reward2,reward3]),local_mu)
-        local_mu = local_mu*0.7        
-        for i in range(1,move_size):
-            state = self.convert_state(state_list[i])
-            # error = self.mu * (reward + self.gamma*next_Q - self.Q[s[0]][s[1]][s[2]][s[3]][s[4]][s[5]][s[6]][s[7]][s[8]][action])      
-            self.ann.update_weights(state,move_list[i],np.array([reward1,reward2,reward3]),local_mu)
-            local_mu = local_mu*0.7             
+        self.ann.update_weights(state,move,future_reward)        
     #pass in relevant row
     def epsilon_greedy(self,state,old_state):
         old_state = np.reshape(old_state,(self.board_size,))
@@ -110,8 +113,8 @@ class QBot_Threefxn:
         draw_value = -1
         draw_index = -1
         for i in range(np.shape(indices)[1]):
-            temp = self.ann.forward_pass(state,indices[0][i]) 
-            print temp
+            temp = self.ann.forward_pass(state,indices[0][i])
+            print temp 
             if temp[0][0]>win_value and temp[0][0]>temp[0][1]:
                 win_value = temp[0][0]
                 win_index = indices[0][i]
@@ -125,3 +128,9 @@ class QBot_Threefxn:
             return win_index
         else:
             return draw_index
+    def random_move(self,state,old_state):
+        old_state = np.reshape(old_state,(self.board_size,))
+        indices = np.where(old_state==0)
+        if (np.random.rand()<self.epsilon):
+            pick = np.random.randint(np.shape(indices)[1])   
+            return indices[0][pick] 

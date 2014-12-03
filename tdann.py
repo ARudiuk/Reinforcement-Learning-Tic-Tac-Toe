@@ -42,7 +42,7 @@ class ANN:
         self.hidden1 = np.concatenate((np.ones((1,1)),self.hidden1),axis=1) 
         self.outputs = np.dot(self.hidden1, self.weights2)
         return 1.0/(1.0+np.exp(-self.beta*self.outputs))    
-    def update_weights(self,state,action,target,mu):
+    def update_weights(self,state,action,target):
         self.output = self.forward_pass(state,action) 
         state = np.append(state,action) 
         state = np.concatenate((np.array([1]),state))
@@ -54,7 +54,7 @@ class ANN:
         # print self.output-target
         # print (self.output-target)**2
         # time.sleep(2)
-        deltao = mu*self.beta*(self.output-target)*self.output*(1.0-self.output)
+        deltao = self.beta*(self.output-target)*self.output*(1.0-self.output)
         #calculate errors depending on amount of hidden layers
         deltah1 = self.hidden1*self.beta*(1.0-self.hidden1)*(np.dot(deltao,np.transpose(self.weights2)))
         self.updatew1 = self.learning_rate*(np.dot(np.transpose(state),deltah1[:,1:])) + self.momentum*self.updatew1

@@ -60,16 +60,14 @@ class game:
                 learner_move = bot.train_move(self.board)
                 learner_move_x = learner_move/self.board_size
                 learner_move_y = learner_move%self.board_size
-                move_list = move_list + (np.copy(learner_move),)
-                state_list = state_list+(np.copy(self.board),)
+                self.last_move = np.copy(learner_move)
+                self.last_state = np.copy(self.board)
                 move_error = self.make_move(learner_move_x,learner_move_y, 1) 
-                if(move_error is True):
-                    move_list = np.delete(move_list,0)
-                    state_list = np.delete(state_list,0)
+                if(move_error is True):                    
                     continue
                 result = self.check_win()                
                 if (result == 1):
-                    bot.train_update(1,0,0,move_list,state_list)
+                    bot.train_update(1,0,0,self.last_move,self.last_state)
                     break
             if((move_count+learner_player)%2==1):
                 # need to switch 1 and 2s so that learner looks at relevant states
@@ -81,11 +79,13 @@ class game:
                     continue
                 result = self.check_win()                
                 if (result == -1):
-                    bot.train_update(0,1,0,move_list,state_list)
-                    break                
+                    bot.train_update(0,1,0,self.last_move,self.last_state)
+                    break
+                if (result == 0 and move_count != self.board_tile_count-1 and move_count!= 0):
+                    bot.train_update(0,0,0,self.last_move,self.last_state)
             move_count+=1
         if result == 0:
-            bot.train_update(0,0,1,move_list,state_list)
+            bot.train_update(0,0,1,self.last_move,self.last_state)
             return 0
         else:            
             return int(result)
