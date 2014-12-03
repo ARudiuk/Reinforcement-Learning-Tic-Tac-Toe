@@ -62,7 +62,7 @@ class QBot_Threefxn:
         if reward1 == 0 and reward2 == 0 and reward3 == 0:
             old_state[0][move]=1
             opponent_action = self.greedy(old_state*-1)
-            old_state[0][opponent_action]=2
+            old_state[0][opponent_action]=-1            
             future_action = self.greedy(old_state)
             old_state = self.convert_state(old_state)
             future_reward = self.mu*self.ann.forward_pass(old_state,future_action)
@@ -102,8 +102,8 @@ class QBot_Threefxn:
                 return draw_index
     def greedy(self,state):
         old_state = np.reshape(np.copy(state),(1,self.board_size))
-        old_state = np.reshape(old_state,(self.board_size,))         
-        state = self.convert_state(state)       
+        old_state = np.reshape(old_state,(self.board_size,))
+        state = self.convert_state(state)   
         indices = np.where(old_state==0)
         # print self.Q[self.index] 
         win_value = -1
@@ -114,7 +114,7 @@ class QBot_Threefxn:
         draw_index = -1
         for i in range(np.shape(indices)[1]):
             temp = self.ann.forward_pass(state,indices[0][i])
-            print temp 
+            # print temp 
             if temp[0][0]>win_value and temp[0][0]>temp[0][1]:
                 win_value = temp[0][0]
                 win_index = indices[0][i]
