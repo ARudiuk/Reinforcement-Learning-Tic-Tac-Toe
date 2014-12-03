@@ -5,13 +5,13 @@ import QBot_Threefxn
 import numpy as np
 from os import path
 
-name = "16hidden"
-bot = QBot_Threefxn.QBot_Threefxn(name,50,16,mu=0.7,learning_rate=0.2,epsilon=0.1)
+name = "9hidden"
+bot = QBot_Threefxn.QBot_Threefxn(name,50,9,mu=0.7,learning_rate=0.2,epsilon=0.01)
 
 # ttt = game.game(board_size = 3)
 # file_exists = path.isfile(name+'results.gz')
 # train_start= 0
-# iterations = 1000000
+# iterations = 100000
 # if file_exists:
 #     results = np.loadtxt(name+'results.gz')
 #     iteration_size = np.shape(results)[0]
@@ -28,5 +28,5 @@ bot = QBot_Threefxn.QBot_Threefxn(name,50,16,mu=0.7,learning_rate=0.2,epsilon=0.
 # np.savetxt(name+'results.gz',results)
 
 
-ttt = game.game(board_size = 4)
+ttt = game.game(board_size = 3)
 ttt.play_with_human(bot)
