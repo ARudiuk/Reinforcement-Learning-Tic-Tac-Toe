@@ -18,7 +18,9 @@
 This assignment explores and compares reinforcement learning through the use of a static \textbf{look-up table??} and a function approximator as a means to learn to play tic-tac-toe and ``four in a row". Initially the system was trained against itself using the Q-learning algorithm as a means of training. Once the system was trained, a second system composed of a function approximator that used a sigmoidal multilayer perceptron was also trained. This second system used the same Q-learning algorithm to update the weights of the function approximator, but also used a back propagation method to update the weights once each game was completed.\\
 It should be noted to give context to the results that if an individual knows how to play tic-tac-toe well they should never lose due to a rather limited number of ways to play. This then extends such that if two players who both know how to play play against each other, the result will always be a tie. 
 \subsection*{Methods}
-
+\begin{equation}
+{Q(s,a)} \leftarrow {Q(s,a) + \mu(r + \gamma max_{a'}Q(s',a')-Q(s,a))}
+\end{equation}
 \subsection*{Conclusions}
 
 \end{document}
