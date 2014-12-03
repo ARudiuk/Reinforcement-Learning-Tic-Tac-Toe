@@ -11,7 +11,7 @@ class QBot_Threefxn:
         self.nhidden = nhidden
         self.learning_rate = learning_rate
         does_file_exist = path.isfile(name+'weights1'+'.npy')
-        self.ann = tdann.ANN(self.board_size*3+1,3,self.nhidden,learning_rate=self.learning_rate)
+        self.ann = tdann.ANN(self.board_size*3+self.board_size,3,self.nhidden,learning_rate=self.learning_rate)
         if does_file_exist:
             print "Bot info exists"
             self.load_info()

@@ -22,7 +22,7 @@ class ANN:
         #set beta term for logistic function
         self.beta = beta
         #set learning rate
-        self.learning_rate = learning_rate
+        self.learning_rate = learning_rate        
 
         #initialize weight matrices    
         self.weights1 = (np.random.rand(self.feature_size+1,self.hidden_layer1_size)-0.5)*2/np.sqrt(self.feature_size+1)
@@ -34,19 +34,19 @@ class ANN:
     #if no data is provided then use the entire input data set
     #in the future it'd be nice to have more activation functions than logistic
     def forward_pass(self, input_data, action):
+        temp = np.zeros((self.feature_size/4,))
+        temp[action]=1
+        action=temp
         input_data = np.append(input_data,action) 
         input_data = np.concatenate((np.array([1]),input_data))
-        input_data = np.reshape(input_data,(1,self.feature_size+1))
-        self.hidden1 = np.dot(input_data, self.weights1)            
+        self.input_data = np.reshape(input_data,(1,self.feature_size+1))
+        self.hidden1 = np.dot(self.input_data, self.weights1)
         self.hidden1 = 1.0/(1.0+np.exp(-self.beta*self.hidden1))
         self.hidden1 = np.concatenate((np.ones((1,1)),self.hidden1),axis=1) 
-        self.outputs = np.dot(self.hidden1, self.weights2)
+        self.outputs = np.dot(self.hidden1, self.weights2)       
         return 1.0/(1.0+np.exp(-self.beta*self.outputs))    
     def update_weights(self,state,action,target):
-        self.output = self.forward_pass(state,action) 
-        state = np.append(state,action) 
-        state = np.concatenate((np.array([1]),state))
-        state = np.reshape(state,(1,self.feature_size+1))       
+        self.output = self.forward_pass(state,action)         
         #calculate error based on logistic
         # print "start"
         # print self.output
@@ -57,7 +57,7 @@ class ANN:
         deltao = self.beta*(self.output-target)*self.output*(1.0-self.output)
         #calculate errors depending on amount of hidden layers
         deltah1 = self.hidden1*self.beta*(1.0-self.hidden1)*(np.dot(deltao,np.transpose(self.weights2)))
-        self.updatew1 = self.learning_rate*(np.dot(np.transpose(state),deltah1[:,1:])) + self.momentum*self.updatew1
+        self.updatew1 = self.learning_rate*(np.dot(np.transpose(self.input_data),deltah1[:,1:])) + self.momentum*self.updatew1
         self.updatew2 = self.learning_rate*(np.dot(np.transpose(self.hidden1),deltao)) + self.momentum*self.updatew2
         self.weights1 -= self.updatew1
         self.weights2 -= self.updatew2

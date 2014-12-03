@@ -20,7 +20,7 @@ else:
 temp = np.zeros((iterations,))
 results = np.append(results,temp)
 for i in range(iterations):
-    if(i%1000==0):
+    if(i%10000==0):
         print i    
     r = ttt.play_with_self(bot)
     results[train_start+i] = r    
