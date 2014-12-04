@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/W32TeX) (preloaded format=pdflatex 2014.9.25)  3 DEC 2014 22:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/W32TeX) (preloaded format=pdflatex 2014.9.25)  3 DEC 2014 23:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -524,7 +524,7 @@ File: Figures/train01epsilon.png Graphic file (type png)
 
 <use Figures/train01epsilon.png>
 Package pdftex.def Info: Figures/train01epsilon.png used on input line 31.
-(pdftex.def)             Requested size: 203.83417pt x 99.52948pt.
+(pdftex.def)             Requested size: 362.37569pt x 176.95854pt.
 
 <Figures/Optimalstateresults.png, id=3, 1734.48pt x 847.0044pt>
 File: Figures/Optimalstateresults.png Graphic file (type png)
@@ -532,7 +532,7 @@ File: Figures/Optimalstateresults.png Graphic file (type png)
 <use Figures/Optimalstateresults.png>
 Package pdftex.def Info: Figures/Optimalstateresults.png used on input line 34.
 
-(pdftex.def)             Requested size: 203.83417pt x 99.52948pt.
+(pdftex.def)             Requested size: 362.37569pt x 176.95854pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -554,32 +554,36 @@ Package pdftex.def Info: Figures/functionApproxFigure.png used on input line 47
 .
 (pdftex.def)             Requested size: 362.37569pt x 237.81789pt.
 
+<Figures/Fxnaproxtd1.png, id=18, 578.16pt x 430.0065pt>
+File: Figures/Fxnaproxtd1.png Graphic file (type png)
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[2 <./Figures/train01epsilon.png> <./Figures/Optimalstateresults.png>] [3 <./Fi
-gures/functionApproxFigure.png>] [4] (./Assignment_7_Report.aux) ) 
+<use Figures/Fxnaproxtd1.png>
+Package pdftex.def Info: Figures/Fxnaproxtd1.png used on input line 55.
+(pdftex.def)             Requested size: 203.83417pt x 151.60027pt.
+ [2 <./Figures/train01epsilon.png> <./Figures/Optimalstateresults.png>] [3 <./F
+igures/functionApproxFigure.png>] [4 <./Figures/Fxnaproxtd1.png>] [5] (./Assign
+ment_7_Report.aux) ) 
 Here is how much of TeX's memory you used:
- 4302 strings out of 494982
- 61543 string characters out of 6180580
- 126395 words of memory out of 5000000
- 7457 multiletter control sequences out of 15000+600000
+ 4308 strings out of 494982
+ 61683 string characters out of 6180580
+ 127403 words of memory out of 5000000
+ 7462 multiletter control sequences out of 15000+600000
  11458 words of font info for 44 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 42i,10n,43p,966b,376s stack positions out of 5000i,500n,10000p,200000b,80000s
-<c:/texlive/2
-014/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2014/texmf
--dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2014/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2014/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr12.pfb><c:/texlive/2014/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmr17.pfb><c:/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-r8.pfb><c:/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c
-:/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><c:/texlive/
-2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on Assignment_7_Report.pdf (4 pages, 259805 bytes).
+ 42i,10n,43p,1930b,377s stack positions out of 5000i,500n,10000p,200000b,80000s
+<c:/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmbx12.pfb><c:/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pf
+b><c:/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texl
+ive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2014/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2014/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2014/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2014/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmsy6.pfb><c:/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmsy8.pfb>
+Output written on Assignment_7_Report.pdf (5 pages, 301763 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
- 38 compressed objects within 1 object stream
+ 65 PDF objects out of 1000 (max. 8388607)
+ 40 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

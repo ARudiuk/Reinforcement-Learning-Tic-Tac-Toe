@@ -1,10 +1,11 @@
 # Fdb version 3
-["pdflatex"] 1417659654 "Assignment_7_Report.tex" "Assignment_7_Report.pdf" "Assignment_7_Report" 1417659656
-  "Assignment_7_Report.aux" 1417659656 554 6212a7fbfe9f41f337c9e71310c13803 ""
-  "Assignment_7_Report.tex" 1417659652 6316 648c92832bd553f600601df22bb260c8 ""
-  "Figures/Optimalstateresults.png" 1417655711 35825 65b1d7795b15474bab222ed5cf10f131 ""
-  "Figures/functionApproxFigure.png" 1417655711 69814 a46ec0c0819317bf7b55c897e5eaa78a ""
-  "Figures/train01epsilon.png" 1417655711 72818 6c752d10f76fb99497b0265295538e14 ""
+["pdflatex"] 1417662334 "Assignment_7_Report.tex" "Assignment_7_Report.pdf" "Assignment_7_Report" 1417662336
+  "Assignment_7_Report.aux" 1417662336 771 f92faddcc388defb27a84b0c98ba335a ""
+  "Assignment_7_Report.tex" 1417662324 8849 d317dd5f64fa8044b9c14c0ce43e3990 ""
+  "Figures/Fxnaproxtd1.png" 1417660245 42693 34882f001f8e62a6a62172869e7200ff ""
+  "Figures/Optimalstateresults.png" 1417660266 35825 65b1d7795b15474bab222ed5cf10f131 ""
+  "Figures/functionApproxFigure.png" 1417660266 69814 a46ec0c0819317bf7b55c897e5eaa78a ""
+  "Figures/train01epsilon.png" 1417660266 72818 6c752d10f76fb99497b0265295538e14 ""
   "c:/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii" 1411693462 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "c:/texlive/2014/texmf-dist/tex/generic/ifxetex/ifxetex.sty" 1411692414 1458 43ab4710dc82f3edeabecd0d099626b2 ""
   "c:/texlive/2014/texmf-dist/tex/generic/oberdiek/etexcmds.sty" 1411693743 7612 c47308d923ec19888707b0f1792b326a ""
@@ -48,6 +49,6 @@
   "c:/texlive/2014/texmf-dist/tex/latex/oberdiek/kvoptions.sty" 1411693744 22417 c74ff4af6a1aa2b65d1924020edbbe11 ""
   "c:/texlive/2014/texmf-dist/tex/latex/pdftex-def/pdftex.def" 1411693926 55368 3c8a0d99822330f2dfabc0dfb09ce897 ""
   (generated)
-  "Assignment_7_Report.pdf"
   "Assignment_7_Report.aux"
+  "Assignment_7_Report.pdf"
   "Assignment_7_Report.log"
