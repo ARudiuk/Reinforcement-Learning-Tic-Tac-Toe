@@ -41,13 +41,14 @@ The output is 2.0 whenever the player with $\epsilon$=0 wins, and is 1.0 when th
 \subsection*{Q-learning Four-in-a-row}
 Although Q-learning worked very well for tic-tac-toe, it unfortunately did not scale very well. Using Q-learning for tic-tac-toe with a lookup table required $3^{9}$ states to be stored, and due to the nature of the method used, this was stored 3 times over. This equated to a requirement of 4MB of memory to store. When this is scaled up to the $3^{16}$ positions required for the four-in-a-row game it required ~24GB of memory. We unfortunately did not have access to a computer with that amount of RAM so we could not complete the game with our lookup table algorithm.
 \subsubsection*{Function approximator}
-A solution to the problem of poor scaling (the ``curse of dimensionality") is to use a function approximator to replace the lookup table. This function approximator uses a multilayer perceptron with a single hidden layer. The inputs correspond to the board state and the selected action (move). This requires only 28 inputs for tic-tac-toe and 49 inputs for four-in-a-row (see figure \ref{fig:funcApproxFigure}). The inputs are composed of 3 inputs for each potential position on the board and 1 final input for the action (move) to be made. The three board location input correspond to either player one in location (100), player 2 in location (010), or no player in location (001).\\
+A solution to the problem of poor scaling (the ``curse of dimensionality") is to use a function approximator to replace the lookup table. This function approximator uses a multilayer perceptron with a single hidden layer. The inputs correspond to the board state and the selected action (move). This requires only 28 inputs for tic-tac-toe and 49 inputs for four-in-a-row (see figure \ref{fig:funcApproxFigure}). The inputs are composed of 3 inputs for each potential position on the board and 1 final input for the action (move) to be made. The three board location input correspond to either player one in location (100), player 2 in location (010), or no player in location (001).
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.8\textwidth]{Figures/functionApproxFigure.png}
 \caption{Multilayer perceptron used as function approximator}
 \label{fig:funcApproxFigure}
-\end{figure}\\
+\end{figure}
+Memory usage is significantly reduced with a function approximator compared to a lookup table. A function approximator only needs to store the weights between nodes, inputs, and ouputs. Therefore, for tic-tac-toe with 40 hidden nodes used (40 was the optimal number of nodes selected by Gerald Tesauro for use in TD learning for backgammon), the system would only need to store 1240 weights. This is a significant reduction from the $\sim$19000 states stored by the lookup table. The function approximator scales $O(n)$, where the lookup table scales $O(3^{n})$. However, the function approximator is not better in every way than the lookup table. Since the lookup table stores the specific value of a board state, and the function approximator works as it sounds (approximates this function), it is not fair to expect a perfectly trained system however the results were... \textbf{INSERT SECTION ON RESULTS HERE}.
 \pagebreak
 \subsection*{Conclusions}
 
