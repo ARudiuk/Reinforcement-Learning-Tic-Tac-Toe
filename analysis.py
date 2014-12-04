@@ -1,6 +1,6 @@
 import numpy as np
 import pylab as pl
-name = "9hidden-td0-2"
+name = "9hidden-td0"
 results = np.loadtxt(name+'results.gz')
 indices = np.where(results==-1)
 results[indices]=1
@@ -17,4 +17,6 @@ results = np.reshape(results,(ticks,bin_size))
 print np.shape(results)
 results = np.average(results,axis=1)
 pl.plot(results)
+pl.xlabel("bin")
+pl.ylabel("Average wins per 1000 games")
 pl.show()
