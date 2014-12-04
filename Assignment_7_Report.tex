@@ -25,22 +25,30 @@ The first method used for tic-tac-toe was the Q-learning algorithm utilizing a l
 \label{eq:q-learning}
 \end{equation}
 The results of the training are shown in figure \ref{fig:training}
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
-\includegraphics[width=0.8\textwidth]{figures/train01epsilon.png}
-\caption{Average results over training period. Bins are 10000 games}
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{Figures/train01epsilon.png}
+\end{subfigure}
+\begin{subfigure}[h]{0.45\textwidth}
+\includegraphics[width=\textwidth]{Figures/Optimalstateresults.png}
+\end{subfigure}
+\caption{Left: Average results over training period, bins are 10000 games. Right: Trained system playing against a trained system with 10\% chance to make random move.}
 \label{fig:training}
 \end{figure}
 The plot shows an average of $\sim$32\% wins. Meaning that 32/100 games end in not a tie. This imperfect result is due to our $\epsilon$ (random action selection) which we set to 0.1. Figure BB show the results of the same trained system, but with $\epsilon$=0, playing against a version of itself with $\epsilon$=0.1.
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{figures/Optimalstateresults.png}
-\caption{Results of trained system playing against itself (player $\epsilon$=0, opponent $\epsilon$=0.1)}
-\label{fig:training}
-\end{figure}
 The output is 2.0 whenever the player with $\epsilon$=0 wins, and is 1.0 when the player with $\epsilon$=0.1 wins. This proves that our system has learned to properly play the game as both players mostly tie, however due to the 10\% chance of a random move by the opponent, the player sometimes wins (though never loses).
 \subsection*{Q-learning Four-in-a-row}
 Although Q-learning worked very well for tic-tac-toe, it unfortunately did not scale very well. Using Q-learning for tic-tac-toe with a lookup table required $3^{9}$ states to be stored, and due to the nature of the method used, this was stored 3 times over. This equated to a requirement of 4MB of memory to store. When this is scaled up to the $3^{16}$ positions required for the four-in-a-row game it required ~24GB of memory. We unfortunately did not have access to a computer with that amount of RAM so we could not complete the game with our lookup table algorithm.
+\subsubsection*{Function approximator}
+A solution to the problem of poor scaling (the ``curse of dimensionality") is to use a function approximator to replace the lookup table. This function approximator uses a multilayer perceptron with a single hidden layer. The inputs correspond to the board state and the selected action (move). This requires only 28 inputs for tic-tac-toe and 49 inputs for four-in-a-row (see figure \ref{fig:funcApproxFigure}). The inputs are composed of 3 inputs for each potential position on the board and 1 final input for the action (move) to be made. The three board location input correspond to either player one in location (100), player 2 in location (010), or no player in location (001).\\
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{Figures/functionApproxFigure.png}
+\caption{Multilayer perceptron used as function approximator}
+\label{fig:funcApproxFigure}
+\end{figure}\\
+\pagebreak
 \subsection*{Conclusions}
 
 \end{document}
