@@ -86,7 +86,8 @@ class QBot_Threefxn:
             draw_value = -1
             draw_index = -1
             for i in range(np.shape(indices)[1]):
-                temp = self.ann.forward_pass(state,indices[0][i])                
+                temp = self.ann.forward_pass(state,indices[0][i])  
+                # print temp              
                 if temp[0][0]>win_value and temp[0][0]>temp[0][1]:
                     win_value = temp[0][0]
                     win_index = indices[0][i]

@@ -1,6 +1,6 @@
 import numpy as np
 import pylab as pl
-name = "9hidden-td0"
+name = "9hidden-td0-2"
 results = np.loadtxt(name+'results.gz')
 indices = np.where(results==-1)
 results[indices]=1

@@ -46,7 +46,8 @@ class ANN:
         self.outputs = np.dot(self.hidden1, self.weights2)       
         return 1.0/(1.0+np.exp(-self.beta*self.outputs))    
     def update_weights(self,state,action,target):
-        self.output = self.forward_pass(state,action)         
+        self.output = self.forward_pass(state,action) 
+        # print self.output        
         #calculate error based on logistic
         # print "start"
         # print self.output
@@ -55,6 +56,7 @@ class ANN:
         # print (self.output-target)**2
         # time.sleep(2)
         deltao = self.beta*(self.output-target)*self.output*(1.0-self.output)
+        # print deltao
         #calculate errors depending on amount of hidden layers
         deltah1 = self.hidden1*self.beta*(1.0-self.hidden1)*(np.dot(deltao,np.transpose(self.weights2)))
         self.updatew1 = self.learning_rate*(np.dot(np.transpose(self.input_data),deltah1[:,1:])) + self.momentum*self.updatew1

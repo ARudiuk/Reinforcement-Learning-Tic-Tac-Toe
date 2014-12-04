@@ -5,8 +5,8 @@ import QBot_Threefxn
 import numpy as np
 from os import path
 
-name = "9hidden-td0-2"
-bot = QBot_Threefxn.QBot_Threefxn(name,50,9,gamma=0.7,learning_rate=0.4,epsilon=0.1)
+name = "9hidden-td0-30"
+bot = QBot_Threefxn.QBot_Threefxn(name,30,9,gamma=0.7,learning_rate=0.4,epsilon=0.1)
 
 ttt = game.game(board_size = 3)
 file_exists = path.isfile(name+'results.gz')

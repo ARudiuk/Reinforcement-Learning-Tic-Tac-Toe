@@ -52,7 +52,7 @@ class game:
         #go until board is filled
         while(move_count<self.board_tile_count):  
             # self.print_board()
-            # time.sleep(0.5)
+            # time.sleep(1)
             if((move_count+learner_player)%2==0):
                 #reshape for now, move to one dimension later
                 learner_move = self.check_if_winning_move_exists(1)
